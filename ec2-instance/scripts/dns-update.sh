@@ -11,6 +11,11 @@ DOMAIN="pmi.ip-ddns.com"
 RECORD="ec2"
 FULL_NAME="${RECORD}.${DOMAIN}"
 
+if [[ -z "$IP" ]]; then
+  echo "❌ Impossible de récupérer l'adresse IP depuis Terraform. L'instance existe-t-elle ?"
+  exit 1
+fi
+
 # Mise à jour via l'API
 curl -s "https://api.cloudns.net/dns/update-record.json" \
   -d "auth-id=${CLOUDNS_AUTH_ID}" \
@@ -20,3 +25,5 @@ curl -s "https://api.cloudns.net/dns/update-record.json" \
   -d "record-type=A" \
   -d "record-data=${IP}" \
   -d "ttl=300"
+
+echo "🌐 DNS mis à jour : ${FULL_NAME} → ${IP}"
