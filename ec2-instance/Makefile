@@ -14,13 +14,4 @@ start:
 stop:
 	@./scripts/ec2-stop.sh
 
-dns:
-	@./scripts/dns-update.sh
-
-dns-delete:
-	@./scripts/dns-delete.sh
-
-destroy-full:
-	@make destroy
-	@make dns-delete
 
