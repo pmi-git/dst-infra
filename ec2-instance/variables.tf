@@ -3,6 +3,10 @@ variable "aws_region" {
   default     = "us-east-2"
 }
 
+variable "my_ip_cidr" {
+  description = "Ton IP publique (avec /32)"
+}
+
 variable "aws_profile" {
   description = "Nom du profil AWS local (dans ~/.aws/credentials)"
   default     = "default"
