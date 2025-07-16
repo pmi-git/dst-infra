@@ -1,8 +1,12 @@
 #!/bin/bash
 cd "$(dirname "$0")/.."
 
-# Charger le .env
-[ -f .env ] && source .env
+if [ ! -f .env ]; then
+  echo "❌ Fichier .env manquant. Impossible de continuer."
+  exit 1
+fi
+
+source .env
 
 # Vérif des variables
 if [[ -z "$CLOUDNS_AUTH_ID" || -z "$CLOUDNS_AUTH_PASS" || -z "$DOMAIN" || -z "$RECORD" ]]; then

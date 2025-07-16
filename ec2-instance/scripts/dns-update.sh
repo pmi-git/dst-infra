@@ -1,5 +1,11 @@
 #!/bin/bash
-source .env
+ENV_FILE=".env"
+if [ ! -f "$ENV_FILE" ]; then
+  echo "❌ Fichier .env introuvable à la racine du projet."
+  exit 1
+fi
+
+source "$ENV_FILE"
 
 cd "$(dirname "$0")/.."
 
