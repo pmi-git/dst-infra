@@ -66,10 +66,3 @@ resource "aws_instance" "ec2" {
     Name = "patrick-ec2"
   }
 }
-
-resource "aws_eip" "ip" {}
-
-resource "aws_eip_association" "assoc" {
-  instance_id   = aws_instance.ec2.id
-  allocation_id = aws_eip.ip.id
-}
