@@ -1,35 +1,21 @@
 #!/bin/bash
-ENV_FILE=".env"
-if [ ! -f "$ENV_FILE" ]; then
-  echo "❌ Fichier .env introuvable à la racine du projet."
-  exit 1
-fi
-
-source "$ENV_FILE"
-
+set -e
 cd "$(dirname "$0")/.."
 
-# Récupération de l’IP publique de l’instance
-IP=$(terraform output -raw instance_public_ip)
+# Charger le .env
+[ -f .env ] && source .env
 
-# Infos Cloudns
-DOMAIN="pmi.ip-ddns.com"
-RECORD="ec2"
-FULL_NAME="${RECORD}.${DOMAIN}"
-
-if [[ -z "$IP" ]]; then
-  echo "❌ Impossible de récupérer l'adresse IP depuis Terraform. L'instance existe-t-elle ?"
+if [[ -z "$DUCKDNS_TOKEN" || -z "$DUCKDNS_DOMAIN" ]]; then
+  echo "❌ DUCKDNS_TOKEN ou DUCKDNS_DOMAIN manquant dans .env"
   exit 1
 fi
 
-# Mise à jour via l'API
-curl -s "https://api.cloudns.net/dns/update-record.json" \
-  -d "auth-id=${CLOUDNS_AUTH_ID}" \
-  -d "auth-password=${CLOUDNS_AUTH_PASS}" \
-  -d "domain-name=${DOMAIN}" \
-  -d "record-name=${RECORD}" \
-  -d "record-type=A" \
-  -d "record-data=${IP}" \
-  -d "ttl=300"
+IP=$(terraform output -raw instance_public_ip)
 
-echo "🌐 DNS mis à jour : ${FULL_NAME} → ${IP}"
+RESPONSE=$(curl -s "https://www.duckdns.org/update?domains=${DUCKDNS_DOMAIN}&token=${DUCKDNS_TOKEN}&ip=${IP}")
+
+if [[ "$RESPONSE" == "OK" ]]; then
+  echo "🌐 DNS mis à jour : ${DUCKDNS_DOMAIN}.duckdns.org → ${IP}"
+else
+  echo "❌ Erreur lors de la mise à jour DuckDNS : $RESPONSE"
+fi
