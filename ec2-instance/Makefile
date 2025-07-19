@@ -34,7 +34,7 @@ ssh: ## Se connecter à l'instance EC2 via SSH
 	echo "🔐 Connexion SSH à ubuntu@$$IP..."; \
 	ssh -i "$$KEY_PATH" ubuntu@$$IP
 
-install_jenkins:
+install_jenkins: ## Installer Jenkins
 	@echo "⚙️ Installation de Jenkins via SSH..."
 	ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$$(terraform output -raw instance_public_ip) 'bash -s' < scripts/install_jenkins.sh
 	@echo "🔐 Mot de passe initial Jenkins :"
