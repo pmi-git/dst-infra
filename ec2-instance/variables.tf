@@ -13,8 +13,9 @@ variable "aws_profile" {
 }
 
 variable "instance_type" {
-  description = "Type d'instance EC2"
-  default     = "t3.micro"
+  description = "Type d'instance EC2 (t3.micro, t3.small, t3.medium, t3.large, etc.)"
+  type        = string
+  default     = "t3.medium"
 }
 
 variable "key_name" {
