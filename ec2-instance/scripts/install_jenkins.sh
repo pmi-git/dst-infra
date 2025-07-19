@@ -25,5 +25,6 @@ sudo apt install -y jenkins
 
 echo "🔧 Activation et démarrage de Jenkins..."
 sudo systemctl enable --now jenkins
+sudo apt install git -y
 
 echo "✅ Jenkins installé et lancé !"
