@@ -20,3 +20,5 @@ echo "🛑 Instance EC2 arrêtée : $INSTANCE_ID"
 
 # Suppression DNS
 ./scripts/dns-delete.sh
+
+exit 0
