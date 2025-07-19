@@ -36,6 +36,6 @@ ssh: ## Se connecter à l'instance EC2 via SSH
 
 install_jenkins:
 	@echo "⚙️ Installation de Jenkins via SSH..."
-	ssh -o StrictHostKeyChecking=no -i ~/.ssh/patrick-key.pem ubuntu@$$(terraform output -raw instance_public_ip) 'bash -s' < scripts/install_jenkins.sh | tee jenkins-install.log
+	ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub ubuntu@$$(terraform output -raw instance_public_ip) 'bash -s' < scripts/install_jenkins.sh | tee jenkins-install.log
 	@echo "🔐 Mot de passe initial Jenkins :"
-	@ssh -o StrictHostKeyChecking=no -i ~/.ssh/patrick-key.pem ubuntu@$$(terraform output -raw instance_public_ip) 'sudo cat /var/lib/jenkins/secrets/initialAdminPassword'
+	@ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa.pub ubuntu@$$(terraform output -raw instance_public_ip) 'sudo cat /var/lib/jenkins/secrets/initialAdminPassword'
