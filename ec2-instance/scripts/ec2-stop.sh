@@ -8,7 +8,12 @@ if [ -z "$INSTANCE_ID" ]; then
   exit 1
 fi
 
-REGION=$(terraform output -raw aws_region)
+REGION=$(terraform output -raw aws_region 2>/dev/null)
+
+if [[ -z "$REGION" ]]; then
+  echo "❌ aws_region introuvable. As-tu bien fait un 'terraform apply' après l'avoir défini ?"
+  exit 1
+fi
 
 aws ec2 stop-instances --instance-ids "$INSTANCE_ID" --region "$REGION"
 echo "🛑 Instance EC2 arrêtée : $INSTANCE_ID"
