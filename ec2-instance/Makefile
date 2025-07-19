@@ -39,3 +39,8 @@ install_jenkins: ## Installer Jenkins
 	ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$$(terraform output -raw instance_public_ip) 'bash -s' < scripts/install_jenkins.sh
 	@echo "🔐 Mot de passe initial Jenkins :"
 	@ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$$(terraform output -raw instance_public_ip) 'sudo cat /var/lib/jenkins/secrets/initialAdminPassword'
+
+install_k3s: ## Installer K3S
+	@echo "🐳 Installation de K3s, Helm et Docker..."
+	ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa ubuntu@$(terraform output -raw instance_public_ip) \
+	'bash -s' < scripts/install_k3s.sh
