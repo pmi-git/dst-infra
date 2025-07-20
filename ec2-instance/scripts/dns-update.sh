@@ -11,7 +11,12 @@ if [[ -z "$DUCKDNS_TOKEN" || -z "$DUCKDNS_DOMAIN" ]]; then
 fi
 
 IP=$(terraform output -raw instance_public_ip)
+# Obtenir l’ID et l’IP publique de l’instance
+INSTANCE_ID=$(terraform output -raw instance_id)
+IP=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" \
+     --query "Reservations[0].Instances[0].PublicIpAddress" --output text)
 
+# Mise à jour DuckDNS
 RESPONSE=$(curl -s "https://www.duckdns.org/update?domains=${DUCKDNS_DOMAIN}&token=${DUCKDNS_TOKEN}&ip=${IP}")
 
 if [[ "$RESPONSE" == "OK" ]]; then
