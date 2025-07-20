@@ -10,7 +10,6 @@ if [[ -z "$DUCKDNS_TOKEN" || -z "$DUCKDNS_DOMAIN" ]]; then
   exit 1
 fi
 
-IP=$(terraform output -raw instance_public_ip)
 # Obtenir l’ID et l’IP publique de l’instance
 INSTANCE_ID=$(terraform output -raw instance_id)
 IP=$(aws ec2 describe-instances --instance-ids "$INSTANCE_ID" \

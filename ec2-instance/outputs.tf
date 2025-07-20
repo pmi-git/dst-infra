@@ -3,6 +3,11 @@ output "instance_public_ip" {
   value       = aws_instance.ec2.public_ip
 }
 
+output "instance_id" {
+  description = "ID de l'instance EC2"
+  value       = aws_instance.ec2.id
+}
+
 output "aws_region" {
   value = var.aws_region
 }
