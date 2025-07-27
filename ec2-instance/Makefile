@@ -1,4 +1,6 @@
 # Makefile pour gérer l'infra EC2 + DNS dynamique
+include .env
+export
 
 .DEFAULT_GOAL := help
 
@@ -25,14 +27,8 @@ stop: ## Arrêter l'instance EC2 et supprimer le DNS
 	@./scripts/ec2-stop.sh
 
 ssh: ## Se connecter à l'instance EC2 via SSH
-	@IP=$$(terraform output -raw instance_public_ip); \
-	KEY_PATH=$$(terraform show -json | jq -r '.values.root_module.variables.public_key_path.value' | sed 's/\.pub$$//'); \
-	if [ -z "$$IP" ] || [ "$$IP" = "null" ]; then \
-		echo "❌ Impossible de récupérer l'IP."; \
-		exit 1; \
-	fi; \
-	echo "🔐 Connexion SSH à ubuntu@$$IP..."; \
-	ssh -i "$$KEY_PATH" ubuntu@$$IP
+	@echo "🔐 Connexion SSH à ubuntu@$(DOMAIN_NAME)..."
+	ssh -i $(SSH_KEY) ubuntu@$(DOMAIN_NAME)
 
 install_jenkins: ## Installer Jenkins
 	@echo "⚙️ Installation de Jenkins via SSH..."
