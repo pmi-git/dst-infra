@@ -64,6 +64,15 @@ resource "aws_security_group" "ssh_access" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # 🚧 [OPTION TP] — Ouverture des NodePorts K3s (30000-32767)
+  ingress {
+    description = "K3s NodePorts - Mode TP"
+    from_port   = 30000
+    to_port     = 32767
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     description = "Allow all outbound"
     from_port   = 0
